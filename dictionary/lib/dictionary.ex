@@ -1,21 +1,20 @@
 defmodule Dictionary do
-  @moduledoc ""
-"
+  @moduledoc
+  """
 Documentation
 for `Dictionary`.
-""
-"
+"""
 
-@doc ""
-"
+@doc
+"""
 Hello world.
 
 ## Examples
 
 iex > Dictionary.hello(): world
 
-""
-"
+"""
+
 def hello do
   :world
 end
