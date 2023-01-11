@@ -42,4 +42,3 @@ The do...end form is just a lump of syntactic sugar—during compilation it is t
 * Special Operators: in
 
 * Other Functions: e.g. div(number,number), hd(list)/tl(list), rem(number,number)
-
