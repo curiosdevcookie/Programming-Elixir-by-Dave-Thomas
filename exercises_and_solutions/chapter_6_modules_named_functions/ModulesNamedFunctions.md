@@ -42,3 +42,92 @@ The do...end form is just a lump of syntactic sugar—during compilation it is t
 * Special Operators: in
 
 * Other Functions: e.g. div(number,number), hd(list)/tl(list), rem(number,number)
+
+## The Pipe operator
+
+The pipe operator `|>` takes the result of one expression and passes it as the first argument to the next expression.
+
+```elixir
+defmodule Pipe do
+  def double(x), do: x * 2
+  def square(x), do: x * x
+  def double_and_square(x), do: x |> double() |> square()
+end
+```
+
+## Modules
+
+Modules are the primary way to organize code in Elixir. They are a container for named functions. Modules are defined with the `defmodule` keyword.
+
+```elixir
+defmodule Math do
+  def double(x) do
+    x * 2
+  end
+end
+```
+
+Modules can be nested:
+
+```elixir
+defmodule Math do
+  defmodule Geometry do
+    def area(x, y) do
+      x * y
+    end
+  end
+end
+```
+
+Modules can be defined in a file with the same name as the module. The file should be in the `lib` directory of your project. For example, the `Math` module defined above should be in `lib/math.ex`.
+
+## Calling Functions
+
+To call a function, you use the module name followed by a dot and the function name. For example, to call the `double` function in the `Math` module, you would write `Math.double(2)`.
+
+## Importing Functions
+
+You can import functions from other modules into the current module with the `import` keyword. This allows you to call the functions without using the module name.
+
+```elixir
+defmodule Math do
+  def double(x) do
+    x * 2
+  end
+
+  def square(x) do
+    x * x
+  end
+end
+
+defmodule MathClient do
+  import Math
+  def double_and_square(x) do
+    x |> double() |> square()
+  end
+end
+```
+
+## Aliasing Modules
+
+You can alias modules with the `alias` keyword. This allows you to call the functions without using the module name.
+
+```elixir
+defmodule Math do
+  def double(x) do
+    x * 2
+  end
+
+  def square(x) do
+    x * x
+  end
+end
+
+defmodule MathClient do
+  alias Math
+  def double_and_square(x) do
+    x |> Math.double() |> Math.square()
+  end
+end
+```
+
