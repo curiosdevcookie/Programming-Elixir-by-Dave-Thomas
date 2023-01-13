@@ -1,0 +1,31 @@
+# "Programming Elixir ≥ 1.6" by Dave Thomas (2nd edition), Chapter 2. Pattern Matching • 18, Exercise: PatternMatching-1
+
+* a=[1,2,3]
+* a=4
+* 4=a
+* [a,b]=[1,2,3]
+* a=[[1,2,3]]
+* [a]=[[1,2,3]]
+* [[a]]=[[1,2,3]]
+
+```zsh
+iex(22)> a = [1,2,3]
+[1, 2, 3]
+iex(23)> a = 4
+4
+iex(24)> 4=a
+4
+iex(25)> [a,b]=[1,2,3]
+** (MatchError) no match of right hand side value: [1, 2, 3]
+    (stdlib 4.2) erl_eval.erl:496: :erl_eval.expr/6
+    iex:25: (file)
+iex(25)> a=[[1,2,3]]
+[[1, 2, 3]]
+iex(26)> [a]=[[1,2,3]]
+[[1, 2, 3]]
+iex(27)> [[a]]=[[1,2,3]]
+** (MatchError) no match of right hand side value: [[1, 2, 3]]
+    (stdlib 4.2) erl_eval.erl:496: :erl_eval.expr/6
+    iex:27: (file)
+
+```

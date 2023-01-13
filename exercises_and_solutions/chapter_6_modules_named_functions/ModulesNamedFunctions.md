@@ -4,6 +4,10 @@ You break your code into named functions and organize these functions into modul
 
 ## Named Functions
 
+Named functions are defined with the `def` keyword. The `def` keyword is followed by the name of the function, a list of arguments, and the body of the function. The body of the function is defined with the `do` keyword.
+
+```elixir
+
 ```elixir
 def double(x) do
   x * 2
@@ -45,7 +49,10 @@ The do...end form is just a lump of syntactic sugar—during compilation it is t
 
 ## The Pipe operator
 
-The pipe operator `|>` takes the result of one expression and passes it as the first argument to the next expression.
+The pipe operator `|>` takes the result of one expression and passes it as the first argument to the next expression. It is a way to chain functions together. For example, the following code:
+
+```elixir
+
 
 ```elixir
 defmodule Pipe do
@@ -130,4 +137,3 @@ defmodule MathClient do
   end
 end
 ```
-
