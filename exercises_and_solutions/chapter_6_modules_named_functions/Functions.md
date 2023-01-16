@@ -114,26 +114,3 @@ defmodule MathClient do
   end
 end
 ```
-
-## Aliasing Modules
-
-You can alias modules with the `alias` keyword. This allows you to call the functions without using the module name.
-
-```elixir
-defmodule Math do
-  def double(x) do
-    x * 2
-  end
-
-  def square(x) do
-    x * x
-  end
-end
-
-defmodule MathClient do
-  alias Math
-  def double_and_square(x) do
-    x |> Math.double() |> Math.square()
-  end
-end
-```
