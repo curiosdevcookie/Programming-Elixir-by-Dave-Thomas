@@ -41,6 +41,16 @@ So, if all the values in a list represent printable characters, it displays the 
 
 [99,97,116,0] (=> [99,97,116,0]) is not a string as _0_ is not a printable character.
 
-## Using Head and Tail to Process a List
+## Using Head and Tail to process a List
 
+```elixir
+defmodule MyList do
+  def length([]), do: 0
+  def length([_head | tail]), do: 1 + length(tail)
+end
+```
 
+## Using Head and Tail to build a List
+  
+  ```elixir
+  
