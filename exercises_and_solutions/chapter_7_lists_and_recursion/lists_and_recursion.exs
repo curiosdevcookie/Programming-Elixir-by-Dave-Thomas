@@ -43,5 +43,8 @@ defmodule ListsAndRecursion do
       # = [12 | [13 | [14 | [15 | [16 | add_one([])]]]]]
       # = [12 | [13 | [14 | [15 | [16 | []]]]]]
 
+      def sum([]), do: 0
+      def sum([head | tail]), do: head + sum(tail)
+
   end
 end

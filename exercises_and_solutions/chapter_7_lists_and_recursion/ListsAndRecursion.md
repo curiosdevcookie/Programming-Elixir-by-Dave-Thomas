@@ -45,12 +45,60 @@ So, if all the values in a list represent printable characters, it displays the 
 
 ```elixir
 defmodule MyList do
-  def length([]), do: 0
-  def length([_head | tail]), do: 1 + length(tail)
+  def len([]), do: 0
+  def len([_head | tail]), do: 1 + length(tail)
 end
 ```
 
 ## Using Head and Tail to build a List
   
   ```elixir
-  
+  defmodule MyNewList do
+    def square([]), do: []
+      def square([head|tail]) do
+      [head*head | square(tail)]
+      end
+
+    def add_1([]), do: []
+    def add_1([head|tail]) do
+      [head+1 | add_1(tail)]
+    end
+  end
+  ```
+
+## Creating a Map
+
+We’ll define a function called map that takes a list and a function and returns a new list containing the result of applying that function to each element in the original.
+
+```elixir
+defmodule MyOwnMap do
+
+  def map([], _fun), do: []
+  def map([head|tail], fun) do
+    [fun.(head) | map(tail, fun)]
+  end
+end
+
+MyOwnMap.map([1,2,3], fn(x) -> x*x end)
+MyOwnMap.map([1,2,3], &(&1*2))
+```
+
+## Reducing a List to a Single Value
+
+We’ll define a function called reduce that takes a list, a function, and an initial value and returns a single value.
+
+```elixir
+defmodule MyOwnReduce do
+
+  def reduce([], current_value, _fun), do: current_value
+  def reduce([head|tail], current_value, fun) do
+    reduce(tail, fun.(head, current_value), fun)
+  end
+end
+
+#[1,2,3], 1, &(&1*&2)
+MyOwnReduce.reduce([1,2,3], 1, fn(x, y) -> x*y end) # 15
+MyOwnReduce.reduce([1,2,3], 1, &(&1*&2))# 15
+MyOwnReduce.reduce([1,2,3], 0, &(&1*&2))# 0 (because 0 is the initial value)
+```
+
