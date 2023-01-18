@@ -57,6 +57,10 @@ list = [1,2,3]
 list2 = Enum.filter(list, fn x -> x != 2 end) # [1,3]
 list3 = Enum.filter(list, fn x -> x!= 3 end) # [1,2]
 
+#Find an element in a list:
+list = [1,2,3]
+Enum.find(list, fn x -> x == 2 end) # 2
+
 #remove an element from a list by value and return it and the rest:
 list = [1,2,3]
 list2 = Enum.split(list, 2) # {[1,2], [3]}
@@ -80,6 +84,25 @@ list = String.split(str, "") # ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l"
 #split the list into chunks of 2:
 list2 = Enum.chunk_every(list, 2) # [["h", "e"], ["l", "l"], ["o", " "], ["w", "o"], ["r", "l"], ["d"]]
 
+#turn a list into a string:
+list = ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"]
+str = Enum.join(list, "") # "hello world"
+
+#turn a list into a string and put a comma in the string:
+list = ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"]
+str = Enum.join(list, ",") # "h,e,l,l,o, ,w,o,r,l,d"
+
+#take the first element of a list:
+list = [1,2,3]
+hd(list) # 1
+
+#take the last element of a list:
+list = [1,2,3]
+tl(list) # [2,3]
+
+#take the second element of a list:
+list = [1,2,3]
+Enum.at(list, 1) # 2
 
 
 #MAPS
@@ -112,6 +135,11 @@ Map.fetch(map, :a) # {:ok, 1}
 Map.fetch(map, :c) # :error
 Map.get(map, :a) # 1
 Map.get(map, :c) # nil
+
+#turn a list into a map:
+list = [1,2,3]
+map = Enum.into(list, %{}) # %{1 => 1, 2 => 2, 3 => 3}
+
 
 
 #OPERATORS
