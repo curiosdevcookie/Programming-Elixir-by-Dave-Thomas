@@ -102,3 +102,50 @@ MyOwnReduce.reduce([1,2,3], 1, &(&1*&2))# 15
 MyOwnReduce.reduce([1,2,3], 0, &(&1*&2))# 0 (because 0 is the initial value)
 ```
 
+## More Complex List Patterns
+
+Elixir supports prepending multiple elements to a list using the join operator.
+
+```zsh
+iex(43)> [1,2,3 | [5,6]]
+[1, 2, 3, 5, 6]
+iex(22)> swappi=fn([a,b|tail]) -> [b,a|tail] end
+#Function<42.3316493/1 in :erl_eval.expr/6>
+iex(23)> swappi.([1,2,3,4,5,6])
+[2, 1, 3, 4, 5, 6]
+```
+
+! This doesn't work:
+
+```zsh
+iex(24)> swappi_recursive=fn([a,b|tail]) -> [b,a|swappi_recursive.(tail)] end
+#Function<somenumber/1 in :erl_eval.expr/6>
+# Expected:
+# swappi_recursive.([1,2,3,4,5,6])
+# [2, 1, 4, 3, 6, 5]
+# Actual:
+# ** (CompileError) iex:24: undefined function swappi_recursive/0 (there is no such import)
+```
+
+### Lists of Lists
+
+```elixir
+defmodule WeatherHistoryOne do
+
+  #[ timestamp, location_id, temperature, rainfall ]
+  def for_location_27([]), do: []
+  def for_location_27([time, 27, temp, rain ]| tail] do
+    [[time, 27, temp, rain ]| for_location_27(tail)]
+  end
+  def for_location_27([_| tail]) do
+    for_location_27(tail)
+  end
+  # Alternatively:
+  # def for_location_27([time, _, temp, rain ]| tail] do
+  #   for_location_27(tail)
+  # end
+end
+```
+
+This is a recurse until the list is empty stanza. Where we’d normally match into a variable called head, here the pattern is: `[time, 27, temp, rain ]` of the 2nd clause of our function `def for_location_27([time, 27, temp, rain ]| tail] do`. The cons operator (in Scala ::) is used to pass the tail to the function on the right, which is the function `for_location_27(tail)` and append the result to the list on the left, which is `[[time, 27, temp, rain ] | for_location_27(tail)]`.
+For this to match, the head of the list must itself be a four-element list, and the second element of this sublist must be 27. If the second element is not 27, the function will not match, and the third clause will be used instead.
