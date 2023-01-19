@@ -36,6 +36,37 @@ list2 = list ++ [4] # [1,2,3,4]
 1 in [1,2,3] #true
 5 in [1,2,3] #false
 
+#check if a value is not in the list:
+1 not in [1,2,3] #false
+5 not in [1,2,3] #true
+
+# Accessing tuples within lists:
+keywordlist = [{:name, "Dave"}, {:likes, "Programming"}, {:where, "Dallas", "TX"}]
+
+# Get the tuple with a given value:
+List.keyfind(keywordlist, "Dave", 1) # {:name, "Dave"}
+List.keyfind(keywordlist, "Programming", 1) # {:likes, "Programming"}
+List.keyfind(keywordlist, "Dallas", 1) # {:where, "Dallas", "TX"}
+List.keyfind(keywordlist, "Dallas", 2) # nil
+List.keyfind(keywordlist, "TX", 2) # {:where, "Dallas", "TX"}
+List.keyfind(keywordlist, "TX", 1, "No city called TX.") # "No city called TX."
+
+# Get the value of a key:
+keywordlist[:likes] # "Programming"
+keywordlist[:name] # "Dave"
+keywordlist[:where] # ** (CaseClauseError) no case clause matching: {:where, "Dallas", "TX"}
+
+# Delete a tuple from a list:
+keywordlist2 = List.keydelete(keywordlist, "Dallas", 1) #[name: "Dave", likes: "Programming"]
+
+# Replace a key:
+List.keyreplace(keywordlist2, :likes, 0, {:likes, "Elixir"}) # [name: "Dave", likes: "Elixir"]
+
+# Updating in the middle (not a cheap operation):
+list = [1,2,3]
+List.replace_at(list, 1, '2️⃣') # [1, [50, 65039, 8419], 3]
+List.replace_at(list, 1, "2️⃣") # [1, "2️⃣", 3]
+
 #remove duplicates from a list:
 Enum.uniq([1,2,3,1,2,3]) # [1,2,3]
 
@@ -103,6 +134,23 @@ tl(list) # [2,3]
 #take the second element of a list:
 list = [1,2,3]
 Enum.at(list, 1) # 2
+
+#FLATTENING of a list
+list = [1,2,3,[4,5,6]]
+list2 = List.flatten(list) # [1,2,3,4,5,6]
+
+# NOT flattening:
+list3 = Enum.flat_map(list, fn x -> [x,x] end) # [1,1,2,2,3,3,[4,5,6]]
+
+# Folding (like reduce, but can choose direction fold left/fold right:
+# fold left ↩️:
+list = [1,2,3]
+List.foldl(list, "", fn value, acc -> "#{value}🚀#{acc}" end) # "3🚀2🚀1🚀"
+
+# fold right ↪️:
+list = [1,2,3]
+List.foldr(list, "", fn value, acc -> "#{value}😄#{acc}" end) # "1😄2😄3😄"
+
 
 
 #MAPS
