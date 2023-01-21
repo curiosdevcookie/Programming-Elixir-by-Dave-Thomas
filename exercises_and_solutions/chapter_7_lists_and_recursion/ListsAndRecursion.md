@@ -104,7 +104,7 @@ MyOwnReduce.reduce([1,2,3], 0, &(&1*&2))# 0 (because 0 is the initial value)
 
 ## More Complex List Patterns
 
-Elixir supports prepending multiple elements to a list using the join operator.
+Elixir supports prepending multiple elements to a list using the | operator.
 
 ```zsh
 iex(43)> [1,2,3 | [5,6]]
