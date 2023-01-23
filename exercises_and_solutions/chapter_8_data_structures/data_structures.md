@@ -79,4 +79,3 @@ iex> File.read("test.txt", encoding: :utf8)
 iex> File.read("test.txt", encoding: :latin1)
 {:ok, "Hello, world!"}
 ```
-
