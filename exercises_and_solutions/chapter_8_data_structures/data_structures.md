@@ -26,11 +26,12 @@ the same)?
 
 ## Keyword Lists
 
-Keyword lists are a special kind of list that are used to represent a collection of key-value pairs. They are often used to represent a set of options passed to a function. Keyword lists are also used to represent the metadata associated with a module.
+Keyword lists are a special kind of list that are used to represent a collection of key-value pairs. They are often used to represent a set of options passed to a function.
+They are also used to represent the metadata associated with a module. A keyword list is a list of two-element tuples, where the first element is an atom.
 
 ### Creating Keyword Lists
 
-```elixir
+```zsh
 iex> kwl = [one: 1, two: 2, three: 3]
 [one: 1, two: 2, three: 3]
 iex> kwl2 = [{:one, 1}, {:two, 2}, {:three, 3}]
@@ -39,9 +40,43 @@ iex> kwl2 = [{:one, 1}, {:two, 2}, {:three, 3}]
 
 ### Accessing Keyword Lists
 
-```elixir
+Accessing a keyword list is similar to accessing a map. You can use the `[]` operator to retrieve the value associated with a key:
+
+```zsh
 iex> kwl[:one]
 1
 iex> kwl[:four]
 nil
 ```
+
+Map over the list of keywordlist values and return a list of values:
+
+```zsh
+iex> kwl = [one: 1, two: 2, three: 3]
+[one: 1, two: 2, three: 3]
+iex> Enum.map(kwl, fn {k, v} -> v end)
+[1, 2, 3]
+```
+
+Map over the list of keywordlist keys and return a list of keys:
+  
+  ```zsh
+  iex> kwl = [one: 1, two: 2, three: 3]
+  [one: 1, two: 2, three: 3]
+  iex> Enum.map(kwl, fn {k, v} -> k end)
+  [:one, :two, :three]
+  ```
+
+### Keyword Lists and Pattern Matching
+
+Keyword lists are often used to represent a set of options passed to a function. For example, the `File.read/1` function takes a keyword list of options. The `:encoding` option is used to specify the encoding of the file. If the `:encoding` option is not specified, the file is read as a binary.
+
+```zsh
+iex> File.read("test.txt")
+{:ok, "Hello, world!"}
+iex> File.read("test.txt", encoding: :utf8)
+{:ok, "Hello, world!"}
+iex> File.read("test.txt", encoding: :latin1)
+{:ok, "Hello, world!"}
+```
+
