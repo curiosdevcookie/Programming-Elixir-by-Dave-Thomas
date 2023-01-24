@@ -79,3 +79,48 @@ iex> File.read("test.txt", encoding: :utf8)
 iex> File.read("test.txt", encoding: :latin1)
 {:ok, "Hello, world!"}
 ```
+
+## Maps
+
+Maps are the go-to key/value data structure in Elixir. They have good perfor- mance at all sizes.
+
+### Creating Maps
+
+```zsh
+iex(22)> map = %{:one => 1, :two => 2, :three => 3}
+%{one: 1, three: 3, two: 2}
+```
+
+### Accessing Maps
+
+```zsh
+iex(22)> map = %{:one => 1, :two => 2, :three => 3}
+%{one: 1, three: 3, two: 2}
+iex(23)> map[:one]
+1
+iex(24)> map[:four]
+nil
+iex(25)> Map.keys(map)
+[:one, :three, :two]
+iex(26)> Map.values(map)
+[1, 3, 2]
+```
+
+### Updating Maps
+
+```zsh
+iex(27)> map2= %{ name: "Dave", likes: "Programming", where: "Dallas" }
+%{likes: "Programming", name: "Dave", where: "Dallas"}
+iex(28)> Map.put(map2, :name, "Dave Thomas")
+%{likes: "Programming", name: "Dave Thomas", where: "Dallas"}
+iex(29)> map3 = Map.drop(map2, [:where])
+%{likes: "Programming", name: "Dave"}
+iex(30)> Map.has_key?(map2,[:where])
+false
+iex(31)> Map.put(map3, :also_likes, "Food")
+%{also_likes: "Food", likes: "Programming", name: "Dave"}
+iex(35)> Map.pop(map3, :also_likes)
+{nil, %{likes: "Programming", name: "Dave"}}
+iex(36)> Map.drop(map3, [:nil])
+%{likes: "Programming", name: "Dave"}
+```
