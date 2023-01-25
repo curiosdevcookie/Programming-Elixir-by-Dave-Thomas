@@ -124,3 +124,19 @@ iex(35)> Map.pop(map3, :also_likes)
 iex(36)> Map.drop(map3, [:nil])
 %{likes: "Programming", name: "Dave"}
 ```
+
+```zsh
+iex(1)> person = %{ name: "Dave", height: 1.88 }
+%{height: 1.88, name: "Dave"}
+iex(2)> %{ name: a_name } = person
+%{height: 1.88, name: "Dave"}
+iex(3)> a_name
+iex(4)> %{ name: _, height: _ } = person
+%{height: 1.88, name: "Dave"}
+iex(5)> %{ name: "Dave" } = person
+%{height: 1.88, name: "Dave"}
+iex(6)> %{ name: _, weight: _ } = person
+# ** (MatchError) no match of right hand side value: %{height: 1.88, name: "Dave"}
+    # (stdlib 4.2) erl_eval.erl:496: :erl_eval.expr/6
+    # iex:6: (file)
+```
