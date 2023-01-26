@@ -140,3 +140,7 @@ iex(6)> %{ name: _, weight: _ } = person
     # (stdlib 4.2) erl_eval.erl:496: :erl_eval.expr/6
     # iex:6: (file)
 ```
+
+### Pattern Matching and Updating Maps
+
+The question we most often ask of our maps is, “Do you have the following keys (and maybe values)?” If the answer is yes, we want to extract the values. If the answer is no, we want to do something else.
