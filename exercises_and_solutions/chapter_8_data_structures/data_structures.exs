@@ -1,6 +1,4 @@
 defmodule Datastructures do
-  # Keywordlists
-
   defmodule Canvas do
     @defaults [fg: "black", bg: "rebeccapurple", font: "Merriweather"]
 
@@ -49,9 +47,18 @@ defmodule Datastructures do
   end
 
   defmodule HotelRoom do
+    @people [
+      %{name: "Grumpy", height: 1.82},
+      %{name: "Dave", height: 1.78},
+      %{name: "Dopey", height: 1.27},
+      %{name: "Shaquille", height: 2.16},
+      %{name: "Sneezy", height: 1.28}
+    ]
     def book(%{name: name, height: height}) when height > 1.9 do
       IO.puts("Need extra-long bed for #{name}")
     end
+
+    # Datastructures.HotelRoom.book(%{name: "Grumpy", height: 1.82})
 
     def book(%{name: name, height: height}) when height < 1.3 do
       IO.puts("Need low shower controls for #{name}")
@@ -61,6 +68,8 @@ defmodule Datastructures do
       IO.puts("Need regular bed for #{person.name}")
     end
 
-    # people |> Enum.each(&HotelRoom.book/1)
+    def people() do
+      @people |> Enum.each(&HotelRoom.book/1)
+    end
   end
 end
