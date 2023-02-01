@@ -133,6 +133,7 @@ iex(2)> %{ name: a_name } = person
 iex(3)> a_name
 iex(4)> %{ name: _, height: _ } = person
 %{height: 1.88, name: "Dave"}
+#Destructuring is used to extract the height value, which is used to filter the results.
 iex(5)> %{ name: "Dave" } = person
 %{height: 1.88, name: "Dave"}
 iex(6)> %{ name: _, weight: _ } = person
@@ -144,3 +145,5 @@ iex(6)> %{ name: _, weight: _ } = person
 ### Pattern Matching and Updating Maps
 
 The question we most often ask of our maps is, “Do you have the following keys (and maybe values)?” If the answer is yes, we want to extract the values. If the answer is no, we want to do something else.
+
+```zsh
