@@ -133,7 +133,7 @@ iex(2)> %{ name: a_name } = person
 iex(3)> a_name
 iex(4)> %{ name: _, height: _ } = person
 %{height: 1.88, name: "Dave"}
-#Destructuring is used to extract the height value, which is used to filter the results.
+#Destructuring is used to extract the height and name values, which is used to filter the results.
 iex(5)> %{ name: "Dave" } = person
 %{height: 1.88, name: "Dave"}
 iex(6)> %{ name: _, weight: _ } = person
@@ -147,3 +147,32 @@ iex(6)> %{ name: _, weight: _ } = person
 The question we most often ask of our maps is, “Do you have the following keys (and maybe values)?” If the answer is yes, we want to extract the values. If the answer is no, we want to do something else.
 
 ```zsh
+    iex(1)> people = [
+...(1)>       %{name: "Grumpy", height: 1.82},
+...(1)>       %{name: "Dave", height: 1.78},
+...(1)>       %{name: "Dopey", height: 1.27},
+...(1)>       %{name: "Shaquille", height: 2.16},
+...(1)>       %{name: "Sneezy", height: 1.28}
+...(1)>     ]
+[
+  %{height: 1.82, name: "Grumpy"},
+  %{height: 1.78, name: "Dave"},
+  %{height: 1.27, name: "Dopey"},
+  %{height: 2.16, name: "Shaquille"},
+  %{height: 1.28, name: "Sneezy"}
+]
+iex(2)> for person = %{ height: needed_height} <- people, needed_height > 1.28, do: person
+[
+  %{height: 1.82, name: "Grumpy"},
+  %{height: 1.78, name: "Dave"},
+  %{height: 2.16, name: "Shaquille"}
+]
+iex(3)> for person = %{name: name_length} <- people, String.length(name_length) > 5, do: person
+[
+  %{height: 1.82, name: "Grumpy"},
+  %{height: 2.16, name: "Shaquille"},
+  %{height: 1.28, name: "Sneezy"}
+]
+```
+
+### Pattern Matching Can’t Bind Keys
