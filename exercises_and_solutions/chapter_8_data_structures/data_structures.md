@@ -175,4 +175,80 @@ iex(3)> for person = %{name: name_length} <- people, String.length(name_length) 
 ]
 ```
 
-### Pattern Matching Can’t Bind Keys
+### Pattern Matching Can’t Bind Values to Keys
+
+When pattern matching, we can't bind a value to a key. The following code will not work:
+
+```zsh
+iex(18)> %{item => :ok } = %{ 1 => :ok, 2 => :error }
+# ** (CompileError) iex:18: cannot use variable item as map key inside a pattern. Map keys in patterns can only be literals (such as atoms, strings, tuples, and the like) or an existing variable matched with the pin operator (such as ^some_var)
+````
+
+This will work:
+
+```zsh
+iex(18)> %{ 2 => state } = %{ 1 => :ok, 2 => :error }
+%{1 => :ok, 2 => :error}
+iex(19)> state
+:error
+```
+
+Also, pattern matching can bind variables already in a variable on the left-hand side of a match with the pin operator:
+
+```zsh
+iex(20)> item = 1
+1
+iex(21)> %{^item => :ok } = %{ 1 => :ok, 2 => :error}
+%{1 => :ok, 2 => :error}
+```
+
+// Example with a map and a for-loop:
+
+```zsh
+iex(22)> data = %{ name: "Dave", state: "TX", likes: "Elixir" }
+%{likes: "Elixir", name: "Dave", state: "TX"}
+iex(23)> for key <- [:name, :likes] do
+...(23)> %{^key => value} = data
+...(23)> value
+...(23)> end
+["Dave", "Elixir"]
+```
+
+## Updating a Map
+
+In elixir we can update already exististing entries (key/value pairs) of maps or add new entries to maps without traversing the whole map!! Keep in mind however that the map is immutable and that the update operation returns a new map.
+
+To update existing entries:
+
+* new_map = %{old_map | key => value} // Updates the value of its key in old_map
+* new_map = Map.update!(old_map, key, fun) // Evaluates fun and updates the value of its key in old_map
+
+```zsh
+iex(30)> map = %{ name: "Dave", likes: "Programming", where: "Dallas" }
+%{likes: "Programming", name: "Dave", where: "Dallas"}
+iex(31)> map = %{ map | name: "Carla"}
+%{likes: "Programming", name: "Carla", where: "Dallas"}
+iex(32)> map = Map.update!(map, :likes, fn _ -> "Elixir" end)
+%{likes: "Elixir", name: "Carla", where: "Dallas"}
+iex(33)> map = Map.update!(map, :likes, fn  -> "Fun" end)       
+# ** (FunctionClauseError) no function clause matching in Map.update!/3    
+iex(34)> map = Map.update!(map, :likes, fn _  -> "Fun" end)
+%{likes: "Fun", name: "Carla", sun: "is shining", where: "Dallas"}
+```
+
+To add new entries to a map, we can use:
+
+* `Map.put/3` = Map.put(map, key, value) // Puts the given value under key in a map
+* `Map.put_new/3` = Map.put_new(map, key, value) // Puts the given value under key in a map unless the entry key already exists in the map
+* `Map.put_new_lazy/3` = Map.put_new_lazy(map, key, fun) // Evaluates fun and puts the result under key in map unless key is already present.
+
+```zsh
+iex(25)> map = %{ name: "Dave", likes: "Programming", where: "Dallas" }
+%{likes: "Programming", name: "Dave", where: "Dallas"}
+iex(26)> map = Map.put(map, :sun, "is shining")
+%{likes: "Programming", name: "Dave", sun: "is shining", where: "Dallas"}
+iex(27)> map = Map.put_new(map, :sun, "is shining")
+%{likes: "Programming", name: "Dave", sun: "is shining", where: "Dallas"}
+iex(28)> map = Map.put_new_lazy(map, :sun, fn -> "is shining" end)
+%{likes: "Programming", name: "Dave", sun: "is shining", where: "Dallas"}
+```
