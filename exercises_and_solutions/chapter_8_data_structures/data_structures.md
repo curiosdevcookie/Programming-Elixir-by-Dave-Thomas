@@ -214,7 +214,7 @@ iex(23)> for key <- [:name, :likes] do
 ["Dave", "Elixir"]
 ```
 
-## Updating a Map
+### Updating a Map
 
 In elixir we can update already exististing entries (key/value pairs) of maps or add new entries to maps without traversing the whole map!! Keep in mind however that the map is immutable and that the update operation returns a new map.
 
@@ -251,4 +251,72 @@ iex(27)> map = Map.put_new(map, :sun, "is shining")
 %{likes: "Programming", name: "Dave", sun: "is shining", where: "Dallas"}
 iex(28)> map = Map.put_new_lazy(map, :sun, fn -> "is shining" end)
 %{likes: "Programming", name: "Dave", sun: "is shining", where: "Dallas"}
+```
+
+## Structs
+
+A struct is just a module that wraps a limited form of map. It’s limited because the keys must be atoms and because these maps don’t have Dict capabilities. The name of the module becomes the name of the map type. Inside the module, you use the defstruct macro to define the struct’s members:
+
+```zsh
+iex(1)> c("defstruct.exs")
+[Subscriber]
+iex(2)> s1 = %Subscriber{}
+%Subscriber{name: "", paid: false, over_18: true}
+iex(3)> s2 = %Subscriber{name: "Clara"}
+%Subscriber{name: "Clara", paid: false, over_18: true}
+iex(4)> s3 = %Subscriber{name: "Clara", paid: false}
+%Subscriber{name: "Clara", paid: false, over_18: true}
+iex(5)> s2
+%Subscriber{name: "Clara", paid: false, over_18: true}
+```
+
+The syntax for creating a struct is the same as the syntax for creating a map—you simply add the module name between the % and the { and you access the struct’s members with the dot operator or pattern matching:
+
+```zsh
+iex(10)> s2.name
+"Clara"
+iex(11)> %Subscriber{name: a_name} = s2
+%Subscriber{name: "Clara", paid: false, over_18: true}
+iex(12)> a_name
+"Clara"
+iex(13)> s3.paid
+false
+iex(14)> %Subscriber{paid: paid}=s3
+%Subscriber{name: "Clara", paid: false, over_18: true}
+# and updating a Struct:
+iex(15)> %Subscriber{s3 | name: "Gordon"}
+%Subscriber{name: "Gordon", paid: false, over_18: true}
+iex(16)> %Subscriber{s3 | paid: "false"}
+%Subscriber{name: "Clara", paid: "false", over_18: true}
+iex(17)> %Subscriber{s3 | paid: "false", name: "Cameron"}
+%Subscriber{name: "Cameron", paid: "false", over_18: true}
+```
+
+Why are structs wrapped in a module? The idea is that you are likely to want to add struct-specific behavior. For example, you might want to add a function that takes a struct as an argument and returns a string that describes the struct. You can do this by defining a function in the module that wraps the struct:
+
+```zsh
+iex(19)> %Attendee{}
+%Attendee{name: "", paid: false, over_18: true}
+iex(20)> a1 = %Attendee{name: "Cameron", over_18: false} 
+%Attendee{name: "Cameron", paid: false, over_18: false}
+iex(21)> a2 = %Attendee{name: "Gordon", over_18: true}
+%Attendee{name: "Gordon", paid: false, over_18: true}
+iex(22)> a3 = %Attendee{name: "Clara", paid: true, over_18: true}
+%Attendee{name: "Clara", paid: true, over_18: true}
+iex(23)> Attendee.may_attend_after_party(a1)     
+false
+iex(24)> Attendee.may_attend_after_party(a2)
+false
+iex(25)> Attendee.may_attend_after_party(a3)                     
+true
+iex(26)> Attendee.print_vip_badge(a1)                            
+Very cheap badge for Cameron
+iex(28)> a4 = %Attendee{name: "", over_18: true}                 
+%Attendee{name: "", paid: false, over_18: true}
+iex(29)> Attendee.print_vip_badge(a4)           
+** (RuntimeError) missing name for badge
+    defstruct_functions.exs:13: Attendee.print_vip_badge/1
+    iex:29: (file)
+iex(31)> Attendee.describe(a1)
+"Name: Cameron, Paid: false, Over 18: false"
 ```
