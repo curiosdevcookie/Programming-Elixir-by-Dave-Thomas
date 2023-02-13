@@ -320,3 +320,119 @@ iex(29)> Attendee.print_vip_badge(a4)
 iex(31)> Attendee.describe(a1)
 "Name: Cameron, Paid: false, Over 18: false"
 ```
+
+Structs also play a large role when implementing polymorphism, which we’ll see when we look at protocols on page 329.
+
+## Nested Dictionary Structures
+
+Dictionary structures allow us to associate keys with values. The values can be any type, including other dictionary structures. This allows us to create nested structures.
+
+```zsh
+iex(33)> %Customer{}
+%Customer{name: "", company: ""}
+iex(34)> c1 = %Customer{name: "Cameron", company: "Pluralsight"}
+%Customer{name: "Cameron", company: "Pluralsight"}
+iex(35)> %BugReport{}
+%BugReport{owner: %Customer{name: "", company: ""}, details: "", severity: 1}
+iex(36)> b1 = %BugReport{owner: c1, details: "Bad stuff"}           
+%BugReport{
+  owner: %Customer{name: "Cameron", company: "Pluralsight"},
+  details: "Bad stuff",
+  severity: 1
+}
+```
+
+Here, the `owner` attribute of the bug report is itself a `Customer struct`. 
+We can access the `company` attribute of the `owner` by using the dot operator:
+
+```zsh
+iex(37)> b1.owner.company
+"Pluralsight"
+
+# update the company name in a crude manner:
+iex(39)> report = %BugReport{ b1 | owner: %Customer{ b1.owner | company: "IBM" }}     
+%BugReport{
+  owner: %Customer{name: "Cameron", company: "IBM"},
+  details: "Bad stuff",
+  severity: 1
+}
+
+#update the company name in a more elegant manner:
+#put_in:
+iex(40)> put_in(report.owner.company, "Cardiff Electrics")
+%BugReport{
+  owner: %Customer{name: "Cameron", company: "Cardiff Electrics"},
+  details: "Bad stuff",
+  severity: 1
+}
+#update_in:
+iex(41)> update_in(report.owner.name, &("Mrs. " <> &1))                          
+%BugReport{
+  owner: %Customer{name: "Mrs. Cameron", company: "IBM"},
+  details: "Bad stuff",
+  severity: 1
+}
+
+#get_in:
+
+#get_and_update_in:
+iex(42)> get_and_update_in(report.owner.name, &{&1, "Mr. " <> &1})               
+{"Mrs. Cameron", %BugReport{
+  owner: %Customer{name: "Mr. Cameron", company: "IBM"},
+  details: "Bad stuff",
+  severity: 1
+}}
+```
+
+### Nested Accessors and Nonstructs
+
+With nested accessor functions we can supply the keys as atoms:
+
+```zsh
+iex(46)> report2 = %{owner: %{name: "Gordon", company: "mutiny"}, severity: 2} 
+%{owner: %{company: "mutiny", name: "Gordon"}, severity: 2}
+iex(52)> put_in(report2[:owner][:company], "Cardiff Electric")                   
+%{owner: %{company: "Cardiff Electric", name: "Gordon"}, severity: 2}
+iex(54)> update_in(report2[:owner][:company], &(&1 <> " inc."))  
+%{owner: %{company: "mutiny inc.", name: "Gordon"}, severity: 2}
+```
+
+### Dynamic (Runtime) Nested Accessors
+
+The nested accessors have some limitations:
+
+* The number of keys you pass a particular call is static.
+* You can’t pass the set of keys as parameters between functions.
+
+These are natural consequences of the way the macros bake their parameters into code at compile time.
+The solution is to add a list of keys as a separate parameter!
+
+[dynamic nested maps](map_dynamic_nested.exs)
+
+```zsh
+iex(1)> c("map_dynamic_nested.exs")
+%{actor: %{first: "Robin", last: "Wright"}, role: "princess"}
+[]
+iex(2)> c("map_dynamic_nested.exs")                    
+%{actor: %{first: "Robin", last: "Wright"}, role: "princess"}
+%{first: "Robin", last: "Wright"}
+[]
+iex(3)> c("map_dynamic_nested.exs")                    
+%{actor: %{first: "Robin", last: "Wright"}, role: "princess"}
+%{first: "Robin", last: "Wright"}
+%{
+  buttercup: %{actor: %{first: "Robin", last: "Wright"}, role: "princess"},
+  westley: %{actor: %{first: "Cary", last: "Elves"}, role: "farm boy"}
+}
+[]
+```
+
+There’s a cool trick that the dynamic versions of both get_in and get_and_update_in support—if you pass a function as a key, that function is invoked to return the corresponding values:
+
+[get_in with function](get_in_w_fun.exs)
+
+```zsh
+iex(4)> c("get_in_w_fun.exs")      
+["José", nil, "Larry"]
+[]
+```
