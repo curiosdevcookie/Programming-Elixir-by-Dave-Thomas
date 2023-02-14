@@ -508,3 +508,8 @@ iex(46)> MapSet.intersection(set1, set2)
 MapSet.new([3, 4, 5])
 iex(47)> MapSet.difference(set1, set2)
 MapSet.new([1, 2])
+iex(48)> MapSet.difference(set2, set1)
+MapSet.new([6, 7])
+iex(49)> MapSet.difference(set2, set2)
+MapSet.new([])
+```
