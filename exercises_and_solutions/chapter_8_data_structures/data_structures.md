@@ -466,7 +466,7 @@ iex(21)> c("access2.exs")
 []
 ```
 
-The `key` and `key!` functions work on dictionary types (maps and structs):
+The `key` and `key!` functions work on dictionary types (maps and structs). The difference between them is that the `key` and `key!` functions do not need to be implemented by the dictionary type. The `key` function returns nil if the key is not present in the dictionary, while the `key!` function raises a `KeyError` exception.
 
 ```zsh
 iex(27)> c("access3.exs")
@@ -491,4 +491,25 @@ iex(32)> Access.pop([name: "Elixir", creator: "Valim"], :name)
 {"Elixir", [creator: "Valim"]}
 iex(33)> Access.pop(%{name: "Elixir", creator: "Valim"}, :pony)
 {nil, %{creator: "Valim", name: "Elixir"}}
+```
+
+## SETS
+
+Sets are implemented via the module `MapSet`. The `MapSet` module provides a set data structure. Sets are collections of distinct elements. The elements of a set are not ordered. The elements of a set are unique. The elements of a set are immutable.
+
+```zsh
+iex(43)> set1 = 1..5 |> Enum.into(MapSet.new())
+MapSet.new([1, 2, 3, 4, 5])
+iex(44)> set2 = 3..7 |> Enum.into(MapSet.new())
+MapSet.new([3, 4, 5, 6, 7])
+iex(45)> MapSet.union(set1, set2)              
+MapSet.new([1, 2, 3, 4, 5, 6, 7])
+iex(46)> MapSet.intersection(set1, set2)
+MapSet.new([3, 4, 5])
+iex(47)> MapSet.difference(set1, set2)
+MapSet.new([1, 2])
+iex(48)> MapSet.difference(set2, set1)
+MapSet.new([6, 7])
+iex(49)> MapSet.difference(set2, set2)
+MapSet.new([])
 ```

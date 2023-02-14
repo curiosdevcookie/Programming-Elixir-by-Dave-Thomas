@@ -22,6 +22,12 @@ IO.inspect(get_in(cast, [Access.key(:buttercup), :actor]))
 IO.inspect(get_in(cast, [Access.key(:buttercup), :actor, Access.elem(1)]))
 # => "Wright"
 
+IO.inspect(get_in(cast, [Access.key(:pony), :actor, Access.elem(1)]))
+# => nil
+
+# IO.inspect(get_in(cast, [Access.key!(:pony), :actor, Access.elem(1)]))
+# => ** (KeyError)
+
 IO.inspect(
   get_and_update_in(cast, [Access.key(:buttercup), :role], fn val ->
     {val, "Queen"}
