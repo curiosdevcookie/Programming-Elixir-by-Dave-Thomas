@@ -342,7 +342,7 @@ iex(36)> b1 = %BugReport{owner: c1, details: "Bad stuff"}
 }
 ```
 
-Here, the `owner` attribute of the bug report is itself a `Customer struct`. 
+Here, the `owner` attribute of the bug report is itself a `Customer struct`.
 We can access the `company` attribute of the `owner` by using the dot operator:
 
 ```zsh
@@ -389,12 +389,12 @@ iex(42)> get_and_update_in(report.owner.name, &{&1, "Mr. " <> &1})
 With nested accessor functions we can supply the keys as atoms:
 
 ```zsh
-iex(46)> report2 = %{owner: %{name: "Gordon", company: "mutiny"}, severity: 2} 
+iex(46)> report2 = %{owner: %{name: "Gordon", company: "Mutiny"}, severity: 2} 
 %{owner: %{company: "mutiny", name: "Gordon"}, severity: 2}
 iex(52)> put_in(report2[:owner][:company], "Cardiff Electric")                   
 %{owner: %{company: "Cardiff Electric", name: "Gordon"}, severity: 2}
 iex(54)> update_in(report2[:owner][:company], &(&1 <> " inc."))  
-%{owner: %{company: "mutiny inc.", name: "Gordon"}, severity: 2}
+%{owner: %{company: "Mutiny inc.", name: "Gordon"}, severity: 2}
 ```
 
 ### Dynamic (Runtime) Nested Accessors
@@ -435,4 +435,60 @@ There’s a cool trick that the dynamic versions of both get_in and get_and_upda
 iex(4)> c("get_in_w_fun.exs")      
 ["José", nil, "Larry"]
 []
+```
+
+## The Access Module
+
+The Access module provides a number of predefined functions to use as parameters to get and get_and_update_in. These functions act as simple filters while traversing the structures.
+
+[Access Module](access1.exs)
+
+```zsh
+iex(7)> c("access1.exs")
+[]
+iex(8)> c("access1.exs")
+["Buttercup", "Westley"]
+[]
+iex(9)> c("access1.exs")
+["Buttercup", "Westley"]
+"farm boy"
+[]
+```
+
+The `elem function` works on `tuples`:
+
+[Access Module](access2.exs)
+
+```zsh
+iex(21)> c("access2.exs")
+[{"Robin", "Wright"}, {"Carey", "Elwes"}]
+["Wright", "Elwes"]
+[]
+```
+
+The `key` and `key!` functions work on dictionary types (maps and structs):
+
+```zsh
+iex(27)> c("access3.exs")
+%{actor: {"Robin", "Wright"}, role: "princess"}
+{"Robin", "Wright"}
+{"Robin", "Wright"}
+"Wright"
+{"princess",
+ %{
+   buttercup: %{actor: {"Robin", "Wright"}, role: "Queen"},
+   westley: %{actor: {"Carey", "Elwes"}, role: "farm boy"}
+ }}
+[]
+```
+
+Finally, `Access.pop` removes the entry with a given key from a map or keyword list. It returns a tuple containing the value associated with the key and the updated container. nil is returned for the value if the key isn’t in the container.
+
+```zsh
+iex(31)> Access.pop(%{name: "Elixir", creator: "Valim"}, :name)
+{"Elixir", %{creator: "Valim"}}
+iex(32)> Access.pop([name: "Elixir", creator: "Valim"], :name)
+{"Elixir", [creator: "Valim"]}
+iex(33)> Access.pop(%{name: "Elixir", creator: "Valim"}, :pony)
+{nil, %{creator: "Valim", name: "Elixir"}}
 ```
