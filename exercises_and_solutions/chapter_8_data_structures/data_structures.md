@@ -513,7 +513,3 @@ MapSet.new([6, 7])
 iex(49)> MapSet.difference(set2, set2)
 MapSet.new([])
 ```
-
-## PROTOCOLS
-
-Protocols are a mechanism for polymorphism in Elixir. They allow us to define a set of functions that can be implemented for different modules. The protocol itself is a module that defines a set of functions. The functions are implemented by other modules. The protocol module is responsible for dispatching the function calls to the correct implementation.
