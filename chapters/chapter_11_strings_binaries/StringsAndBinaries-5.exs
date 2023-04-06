@@ -4,7 +4,7 @@ defmodule StringPyramid do
   """
   @animals ["cat", "elephant", "zebra", "spider-monkey", "crocodile"]
 
-  def draw_pyramid(list) do
+  def draw_pyramid() do
     @animals
     |> Enum.sort_by(&byte_size/1)
     |> Enum.each(fn x -> StringPyramid.prepare_string(x) |> IO.puts() end)
