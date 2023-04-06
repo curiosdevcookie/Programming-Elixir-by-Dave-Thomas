@@ -1,8 +1,10 @@
 # Strings and Binaries
 
+## Strings
+
 Elixir strings are UTF-8 encoded binaries. They are not the same as character lists, which are lists of integers. Strings are surrounded by double quotes, while character lists are surrounded by single quotes.
 
-## String interpolation
+### String interpolation
 
 String interpolation is a way to embed expressions in strings. The syntax is to use `#{}` to embed an expression. The expression is evaluated and the result is converted to a string and inserted into the string.
 
@@ -17,7 +19,7 @@ iex(4)> "Hello, #{String.capitalize name}!"
 "Hello, Susi!"
 ```
 
-## heredocs
+### heredocs
 
 Heredocs are a way to embed multi-line strings in your code. The syntax is to use `"""` to start the string and `"""` to end the string. The string can contain any characters, including newlines.
 
@@ -32,7 +34,7 @@ iex(5)>  """
 "This \nis \na \nmulti-line \nstring\n"
 ```
 
-## Sigils
+### Sigils
 
 A sigil starts with a tilde, followed by an upper- or lowercase letter, some delimited content, and perhaps some options. The delimiters can be <...>, {...}, [...], (...), |...|, /.../, "...", and '...'.
 
@@ -76,7 +78,7 @@ iex(15)> ~D<1999-12-31>
 ~D[1999-12-31]
 ```
 
-### Single-quoted strings
+#### Single-quoted strings
 
 Single-quoted strings are character lists.
 
@@ -101,7 +103,7 @@ iex(23)> ?😌
 128524
 ```
 
-### Double-quoted strings
+#### Double-quoted strings
 
 Double-quoted strings are UTF-8 encoded binaries.
 
@@ -110,3 +112,17 @@ iex(21)> [ head | tail ] = "cat"
 #** (MatchError) no match of right hand side value: "cat"
 ```
 
+## Binaries
+
+Binaries are a sequence of bytes. They are not the same as strings, which are UTF-8 encoded binaries. Binaries are surrounded by `<...>`, e.g. `<<1,2,3>>` or `<<term>>`.
+
+```bash
+iex(1)> <<1,2,3>>
+<<1, 2, 3>>
+iex(2)> byte_size(<<1,2,3>>)
+3
+iex(3)> byte_size("cat")
+3
+iex(4)> bit_size(<<1,2,3>>)
+24
+```
